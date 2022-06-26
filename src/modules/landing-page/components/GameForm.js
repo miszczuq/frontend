@@ -51,8 +51,7 @@ export const GameForm = ({}) => {
           onSubmit={async (values, { setSubmitting }) => {
             const response = await getGame(values.id);
             if (response.data && response.status === 200) {
-              const result = response.data
-              console.log("before if",result)
+              const result = response.data;
               navigate(`/game/${result.title}/${result.id}`, {
                 state: { game: result },
               });
