@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Button,
   Center,
@@ -43,7 +43,9 @@ export const Game = () => {
   const updateDiscount = () => {
     location.state.game.discount = newDiscount;
   };
-
+  useEffect(() => {
+    console.log(location.state)
+  }, [])
   return (
     <Center w="100%" minH="800px">
       <Modal

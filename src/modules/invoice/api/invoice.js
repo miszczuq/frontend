@@ -1,7 +1,12 @@
 import { axiosInstance } from '../../../axiosInstance';
 export const setInvoice = async data => {
-  const response = await axiosInstance.post('/invoice', data);
-  if (response.status === 200) {
-    return response;
-  }
+  return axiosInstance.post(`/invoice`,data)
+      .then( (res)=> {
+        if(res.status === 200){
+          console.log(res)
+          return res
+        }
+      }).catch( err =>{
+        return err.response
+      });
 };

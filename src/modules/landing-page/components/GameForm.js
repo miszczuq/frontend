@@ -49,8 +49,10 @@ export const GameForm = ({}) => {
         <Formik
           initialValues={{ id: '' }}
           onSubmit={async (values, { setSubmitting }) => {
-            const result = await getGame(values.id);
-            if (result) {
+            const response = await getGame(values.id);
+            if (response.data && response.status === 200) {
+              const result = response.data
+              console.log("before if",result)
               navigate(`/game/${result.title}/${result.id}`, {
                 state: { game: result },
               });
