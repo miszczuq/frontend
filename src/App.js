@@ -16,10 +16,9 @@ export const App = () => {
         <MainLayout>
           <Routes>
             <Route path="/" element={<GameForm />} />
-            <Route path="/client/:game/:gameId" element={<ClientForm />} />
             <Route path="/game/:game/:gameId/" element={<Game />} />
+            <Route path="/client/:game/:gameId" element={<ClientForm />} />
             <Route path="/invoice/:game/:gameId/" element={<InvoiceForm />} />
-
             <Route path="/summary/:game/:gameId/" element={<Summary />} />
           </Routes>
         </MainLayout>

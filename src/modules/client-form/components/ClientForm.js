@@ -12,7 +12,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as Yup from 'yup';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getClient } from '../api/client';
@@ -32,6 +32,9 @@ export const ClientForm = () => {
         val => val && val.toString().length === 9
       ),
   });
+  useEffect(() => {
+    console.log('state:', location.state);
+  }, []);
   return (
     <Center w="100%" minH="800px">
       <Box p={4} w="30%">
@@ -46,7 +49,7 @@ export const ClientForm = () => {
             const result = await getClient(values.phoneNumber);
             if (result) {
               navigate(
-                `/game/${location.state.game.title}/${location.state.game.id}`,
+                `/summary/${location.state.game.title}/${location.state.game.id}`,
                 {
                   state: { ...location.state, client: result },
                 }

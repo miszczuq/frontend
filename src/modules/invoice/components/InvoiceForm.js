@@ -53,7 +53,7 @@ export const InvoiceForm = () => {
             const result = await setInvoice(values);
             if (result) {
               navigate(
-                `/summary/${location.state.game.title}/${location.state.game.id}`,
+                `/client/${location.state.game.title}/${location.state.game.id}`,
                 { state: { ...location.state, invoice: values } }
               );
             }

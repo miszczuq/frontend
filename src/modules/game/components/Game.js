@@ -18,6 +18,7 @@ import {
   InputGroup,
   InputLeftAddon,
   useMediaQuery,
+  Divider,
 } from '@chakra-ui/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Field, Form, Formik } from 'formik';
@@ -59,7 +60,9 @@ export const Game = () => {
           <ModalHeader>Propozycja znizki</ModalHeader>
           <ModalCloseButton />
           {showDefaultBody ? (
-            <ModalBody>Czy akceptujesz tę znizke?</ModalBody>
+            <ModalBody>
+              Czy akceptujesz znizke {location.state.game.discount}%?
+            </ModalBody>
           ) : (
             ''
           )}
@@ -142,7 +145,7 @@ export const Game = () => {
                     onClose();
                     updateDiscount();
                     navigate(
-                      `/summary/${location.state.game.title}/${location.state.game.id}`,
+                      `/client/${location.state.game.title}/${location.state.game.id}`,
                       { state: { ...location.state } }
                     );
                   }}
