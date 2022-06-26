@@ -14,10 +14,10 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import React, { useEffect } from 'react';
 import { getGame } from '../api/game';
+import { TOAST_DURATION, TOAST_ERROR } from '../../../constants';
 
 export const GameForm = ({}) => {
   const toast = useToast();
-  const TOAST_DURATION = 2500;
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -43,16 +43,27 @@ export const GameForm = ({}) => {
       <Box p={4} w="30%">
         <Center>
           <Text fontSize="1xl" mb={10}>
-            Znajdź grę 😳
+            Znajdź grę
           </Text>
         </Center>
         <Formik
           initialValues={{ id: '' }}
           onSubmit={async (values, { setSubmitting }) => {
             const result = await getGame(values.id);
-            navigate(`/client/${result.title}/${result.id}`, {
-              state: { game: result },
-            });
+            if (result) {
+              navigate(`/client/${result.title}/${result.id}`, {
+                state: { game: result },
+              });
+            } else {
+              toast({
+                title: 'Nie znaleziono gry',
+                description: 'Spróbuj ponownie',
+                status: TOAST_ERROR,
+                duration: TOAST_DURATION,
+                isClosable: true,
+                position: 'top',
+              });
+            }
             setSubmitting(false);
           }}
           validationSchema={validate}

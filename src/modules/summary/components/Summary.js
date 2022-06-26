@@ -6,6 +6,7 @@ import {
   Grid,
   GridItem,
   Divider,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons';
 
@@ -20,7 +21,7 @@ export const Summary = () => {
   const sellPrice = location.state.game.sellPrice;
   const discount = location.state.game.discount;
   const navigate = useNavigate();
-
+  const [isLessThan] = useMediaQuery('(max-width: 768px)');
   const count = () => {
     const percent = ((sellPrice / 100) * discount).toFixed(2);
     const sum = (sellPrice - percent).toFixed(2);
@@ -37,7 +38,7 @@ export const Summary = () => {
         borderRadius="md"
         w="80%"
         p={10}
-        templateColumns="repeat(2,1fr)"
+        templateColumns={!isLessThan ? 'repeat(2,1fr)' : 'repeat(1,1fr)'}
         gap={6}
       >
         <GridItem flexDirection="column">
@@ -58,30 +59,26 @@ export const Summary = () => {
           </Flex>
         </GridItem>
 
-        <GridItem flexDirection="column">
-          <Center justifyContent="space-between" mb={4}>
-            <Text>Cena</Text>
-            <Text>${sellPrice}</Text>
-          </Center>
-          <Center justifyContent="space-between" mb={4}>
-            <Text>Znizka</Text>
-            <Text>{percent}</Text>
-          </Center>
-          <Divider />
-          <Center justifyContent="space-between" mt={4}>
-            <Text>Suma</Text>
-            <Text>{sum}</Text>
-          </Center>
-          <Button
-            colorScheme="teal"
-            mt={10}
-            onClick={() => {
-              navigate('/', { state: 'summary' });
-            }}
-          >
-            Potwierdź
-          </Button>
-        </GridItem>
+        {location.state.invoice ? (
+          <GridItem flexDirection="column">
+            <Text>Dane do faktury</Text>
+            <Divider marginY={5} />
+            <Center justifyContent="space-between" mb={4}>
+              <Text>Nazwa firmy</Text>
+              <Text>{location.state.invoice.companyName}</Text>
+            </Center>
+            <Center justifyContent="space-between" mb={4}>
+              <Text>Numer telefonu</Text>
+              <Text>{location.state.invoice.phoneNumber}</Text>
+            </Center>
+            <Center justifyContent="space-between" mb={4}>
+              <Text>NIP</Text>
+              <Text>{location.state.invoice.nip}</Text>
+            </Center>
+          </GridItem>
+        ) : (
+          <></>
+        )}
         <GridItem>
           <Text>Informacje zamówienia</Text>
           <Divider marginY={5} />
@@ -142,6 +139,30 @@ export const Summary = () => {
             </Button>
           </Flex>
           <Divider marginY={5} />
+        </GridItem>
+        <GridItem flexDirection="column">
+          <Center justifyContent="space-between" mb={4}>
+            <Text>Cena</Text>
+            <Text>${sellPrice}</Text>
+          </Center>
+          <Center justifyContent="space-between" mb={4}>
+            <Text>Znizka</Text>
+            <Text>{percent}</Text>
+          </Center>
+          <Divider />
+          <Center justifyContent="space-between" mt={4}>
+            <Text>Suma</Text>
+            <Text>{sum}</Text>
+          </Center>
+          <Button
+            colorScheme="teal"
+            mt={10}
+            onClick={() => {
+              navigate('/', { state: 'summary' });
+            }}
+          >
+            Potwierdź
+          </Button>
         </GridItem>
       </Grid>
     </Center>

@@ -17,6 +17,7 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Field, Form, Formik } from 'formik';
@@ -29,6 +30,7 @@ export const Game = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLessThan] = useMediaQuery('(max-width: 768px)');
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const validate = Yup.object({
@@ -55,9 +57,9 @@ export const Game = () => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Propozycja znizki</ModalHeader>
-
+          <ModalCloseButton />
           {showDefaultBody ? (
-            <ModalBody>Czy akceptujesz te znizke?</ModalBody>
+            <ModalBody>Czy akceptujesz tę znizke?</ModalBody>
           ) : (
             ''
           )}
@@ -219,7 +221,7 @@ export const Game = () => {
             quam. Fugit neque nam nemo architecto asperiores quos dicta aliquam
           </Text>
         </Center>
-        <Center p={10}>
+        <Center p={10} flexDirection={!isLessThan ? 'row' : 'column'}>
           <Button
             colorScheme="teal"
             m={15}

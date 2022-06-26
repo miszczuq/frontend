@@ -9,14 +9,17 @@ import {
   InputGroup,
   InputLeftAddon,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getClient } from '../api/client';
+import { TOAST_DURATION, TOAST_ERROR } from '../../../constants';
 
 export const ClientForm = () => {
+  const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
   const validate = Yup.object({
@@ -41,12 +44,23 @@ export const ClientForm = () => {
           initialValues={{ phoneNumber: '' }}
           onSubmit={async (values, { setSubmitting }) => {
             const result = await getClient(values.phoneNumber);
-            navigate(
-              `/game/${location.state.game.title}/${location.state.game.id}`,
-              {
-                state: { ...location.state, client: result },
-              }
-            );
+            if (result) {
+              navigate(
+                `/game/${location.state.game.title}/${location.state.game.id}`,
+                {
+                  state: { ...location.state, client: result },
+                }
+              );
+            } else {
+              toast({
+                title: 'Nie znaleziono klienta',
+                description: 'Spróbuj ponownie',
+                status: TOAST_ERROR,
+                duration: TOAST_DURATION,
+                isClosable: true,
+                position: 'top',
+              });
+            }
             setSubmitting(false);
           }}
           validationSchema={validate}

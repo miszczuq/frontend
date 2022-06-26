@@ -54,7 +54,7 @@ export const InvoiceForm = () => {
             if (result) {
               navigate(
                 `/summary/${location.state.game.title}/${location.state.game.id}`,
-                { state: { ...location.state } }
+                { state: { ...location.state, invoice: values } }
               );
             }
             setSubmitting(false);
