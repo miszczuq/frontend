@@ -12,11 +12,12 @@ import {
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import { setInvoice } from '../api/invoice';
 
 export const InvoiceForm = () => {
-  const params = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const validate = Yup.object({
     companyName: Yup.string().required('Nazwa firmy jest wymagana'),
@@ -37,6 +38,7 @@ export const InvoiceForm = () => {
         val => val && val.toString().length === 10
       ),
   });
+
   return (
     <Center w="100%" minH="800px">
       <Box p={4} w="30%">
@@ -47,14 +49,15 @@ export const InvoiceForm = () => {
         </Center>
         <Formik
           initialValues={{ companyName: '', phoneNumber: '', nip: '' }}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              console.log('values:', values);
-              setSubmitting(false);
+          onSubmit={async (values, { setSubmitting }) => {
+            const result = await setInvoice(values);
+            if (result) {
               navigate(
-                `/summary/${params.game}/${params.gameId}/${params.clientId}`
+                `/summary/${location.state.game.title}/${location.state.game.id}`,
+                { state: { ...location.state } }
               );
-            }, 2000);
+            }
+            setSubmitting(false);
           }}
           validationSchema={validate}
         >

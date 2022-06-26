@@ -13,11 +13,12 @@ import {
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { getClient } from '../api/client';
 
 export const ClientForm = () => {
   const navigate = useNavigate();
-  const params = useParams();
+  const location = useLocation();
   const validate = Yup.object({
     phoneNumber: Yup.number()
       .typeError('Podaj numer')
@@ -38,12 +39,15 @@ export const ClientForm = () => {
         </Center>
         <Formik
           initialValues={{ phoneNumber: '' }}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              console.log('values:', values);
-              navigate(`/game/${params.game}/${params.gameId}/1`);
-              setSubmitting(false);
-            }, 2000);
+          onSubmit={async (values, { setSubmitting }) => {
+            const result = await getClient(values.phoneNumber);
+            navigate(
+              `/game/${location.state.game.title}/${location.state.game.id}`,
+              {
+                state: { ...location.state, client: result },
+              }
+            );
+            setSubmitting(false);
           }}
           validationSchema={validate}
         >

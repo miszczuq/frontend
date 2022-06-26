@@ -17,16 +17,10 @@ export const App = () => {
           <Routes>
             <Route path="/" element={<GameForm />} />
             <Route path="/client/:game/:gameId" element={<ClientForm />} />
-            <Route path="game/:game/:gameId/:clientId" element={<Game />} />
-            <Route
-              path="/invoice/:game/:gameId/:clientId"
-              element={<InvoiceForm />}
-            />
+            <Route path="/game/:game/:gameId/" element={<Game />} />
+            <Route path="/invoice/:game/:gameId/" element={<InvoiceForm />} />
 
-            <Route
-              path="summary/:game/:gameId/:clientId"
-              element={<Summary />}
-            />
+            <Route path="/summary/:game/:gameId/" element={<Summary />} />
           </Routes>
         </MainLayout>
       </BrowserRouter>

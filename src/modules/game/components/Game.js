@@ -18,16 +18,18 @@ import {
   InputGroup,
   InputLeftAddon,
 } from '@chakra-ui/react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Field, Form, Formik, useFormik } from 'formik';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 export const Game = () => {
   const [showDefaultBody, setShowDefaultBody] = useState(true);
   const [showDiscountInput, setShowDiscountInput] = useState(false);
   const [askForInvoice, setAskForInvoice] = useState(false);
+  const [newDiscount, setNewDiscount] = useState(0);
 
-  const params = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const validate = Yup.object({
     discount: Yup.number()
@@ -35,6 +37,9 @@ export const Game = () => {
       .max(100, 'Maksymalna wartość to 100')
       .required('Znizka jest wymagana'),
   });
+  const updateDiscount = () => {
+    location.state.game.discount = newDiscount;
+  };
 
   return (
     <Center w="100%" minH="800px">
@@ -64,12 +69,10 @@ export const Game = () => {
                 <Formik
                   initialValues={{ discount: '' }}
                   onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                      console.log('values:', values);
-                      setShowDiscountInput(false);
-                      setAskForInvoice(true);
-                      setSubmitting(false);
-                    }, 2000);
+                    setNewDiscount(values.discount);
+                    setShowDiscountInput(false);
+                    setAskForInvoice(true);
+                    setSubmitting(false);
                   }}
                   validationSchema={validate}
                 >
@@ -88,6 +91,7 @@ export const Game = () => {
                               <Input
                                 {...field}
                                 id="discount"
+                                type="number"
                                 placeholder="znizka"
                               />
                             </InputGroup>
@@ -134,8 +138,10 @@ export const Game = () => {
                   mr={3}
                   onClick={() => {
                     onClose();
+                    updateDiscount();
                     navigate(
-                      `/summary/${params.game}/${params.gameId}/${params.clientId}`
+                      `/summary/${location.state.game.title}/${location.state.game.id}`,
+                      { state: { ...location.state } }
                     );
                   }}
                 >
@@ -145,8 +151,10 @@ export const Game = () => {
                   colorScheme="teal"
                   onClick={() => {
                     onClose();
+                    updateDiscount();
                     navigate(
-                      `/invoice/${params.game}/${params.gameId}/${params.clientId}`
+                      `/invoice/${location.state.game.title}/${location.state.game.id}`,
+                      { state: { ...location.state } }
                     );
                   }}
                 >
@@ -194,7 +202,7 @@ export const Game = () => {
       >
         <Center flexDirection="column">
           <Text fontSize="4xl" m={8}>
-            {params.game}
+            {location.state.game.title}
           </Text>
           <Text w="80%" fontSize="sm" textAlign="left">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro quia

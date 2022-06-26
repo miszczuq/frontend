@@ -9,15 +9,27 @@ import {
 } from '@chakra-ui/react';
 import { SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons';
 
-import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 export const Summary = () => {
   const [showPolicy, setShowPolicy] = useState(false);
   const [showClient, setShowClient] = useState(false);
-
-  const params = useParams();
+  const [percent, setPercent] = useState(0);
+  const [sum, setSum] = useState(0);
+  const location = useLocation();
+  const sellPrice = location.state.game.sellPrice;
+  const discount = location.state.game.discount;
   const navigate = useNavigate();
 
+  const count = () => {
+    const percent = ((sellPrice / 100) * discount).toFixed(2);
+    const sum = (sellPrice - percent).toFixed(2);
+    setPercent(percent);
+    setSum(sum);
+  };
+  useEffect(() => {
+    count();
+  }, []);
   return (
     <Center w="100%" minH="800px">
       <Grid
@@ -37,11 +49,11 @@ export const Summary = () => {
           </Text>
           <Flex flexDirection="column" marginY={5} pe={10}>
             <Text fontSize="2xl" mb={14}>
-              {params.game}
+              {location.state.game.title}
             </Text>
             <Text fontSize="sm">ilość: 1</Text>
             <Text fontSize="1xl" fontWeight="bold" mt={5}>
-              $250
+              ${sellPrice}
             </Text>
           </Flex>
         </GridItem>
@@ -49,16 +61,16 @@ export const Summary = () => {
         <GridItem flexDirection="column">
           <Center justifyContent="space-between" mb={4}>
             <Text>Cena</Text>
-            <Text>$200</Text>
+            <Text>${sellPrice}</Text>
           </Center>
           <Center justifyContent="space-between" mb={4}>
-            <Text>VAT</Text>
-            <Text>$50</Text>
+            <Text>Znizka</Text>
+            <Text>{percent}</Text>
           </Center>
           <Divider />
           <Center justifyContent="space-between" mt={4}>
             <Text>Suma</Text>
-            <Text>$250</Text>
+            <Text>{sum}</Text>
           </Center>
           <Button
             colorScheme="teal"
@@ -104,10 +116,14 @@ export const Summary = () => {
               <Text mb={5}>Informacje o kliencie</Text>
               {showClient ? (
                 <Flex flexDirection="column" mb={3}>
-                  <Text>Imię: Klient 😜</Text>
-                  <Text>Adres: Adres 😜</Text>
-                  <Text>Numer telefonu: Numer telefonu 😜</Text>
-                  <Text>Psiuta: Psiuta 😜</Text>
+                  <Text>
+                    Imię:{' '}
+                    {location.state.client.firstName +
+                      ' ' +
+                      location.state.client.lastName}{' '}
+                  </Text>
+                  <Text>Adres: {location.state.client.address}</Text>
+                  <Text>Numer telefonu: {location.state.client.contact}</Text>
                 </Flex>
               ) : (
                 ''

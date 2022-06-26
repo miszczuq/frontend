@@ -13,6 +13,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import React, { useEffect } from 'react';
+import { getGame } from '../api/game';
 
 export const GameForm = ({}) => {
   const toast = useToast();
@@ -21,7 +22,6 @@ export const GameForm = ({}) => {
   const location = useLocation();
 
   const validate = Yup.object({
-    name: Yup.string().max(25).required('Nazwa jest wymagana'),
     id: Yup.number().typeError('Podaj numer').required('Id jest wymagane'),
   });
 
@@ -47,30 +47,18 @@ export const GameForm = ({}) => {
           </Text>
         </Center>
         <Formik
-          initialValues={{ name: '', id: '' }}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              console.log('values:', values);
-              navigate(`/client/${values.name}/${values.id}`);
-              setSubmitting(false);
-            }, 2000);
+          initialValues={{ id: '' }}
+          onSubmit={async (values, { setSubmitting }) => {
+            const result = await getGame(values.id);
+            navigate(`/client/${result.title}/${result.id}`, {
+              state: { game: result },
+            });
+            setSubmitting(false);
           }}
           validationSchema={validate}
         >
           {props => (
             <Form>
-              <Field name="name">
-                {({ field, form }) => (
-                  <FormControl
-                    isInvalid={form.errors.name && form.touched.name}
-                    mb={5}
-                  >
-                    <FormLabel htmlFor="name">Nazwa gry</FormLabel>
-                    <Input {...field} id="name" placeholder="nazwa gry" />
-                    <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
               <Field name="id">
                 {({ field, form }) => (
                   <FormControl
