@@ -22,6 +22,7 @@ export const ClientForm = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
+  console.log("location in client From", location)
   const validate = Yup.object({
     phoneNumber: Yup.number()
       .typeError('Podaj numer')
@@ -47,11 +48,11 @@ export const ClientForm = () => {
           initialValues={{ phoneNumber: '' }}
           onSubmit={async (values, { setSubmitting }) => {
             const result = await getClient(values.phoneNumber);
-            if (result) {
+            if (result.data && result.status === 200) {
               navigate(
                 `/summary/${location.state.game.title}/${location.state.game.id}`,
                 {
-                  state: { ...location.state, client: result },
+                  state: { ...location.state, client: result.data },
                 }
               );
             } else {

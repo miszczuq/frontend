@@ -12,12 +12,16 @@ import { SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons';
 
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import {getGame} from "../../landing-page/api/game";
+import {TOAST_DURATION, TOAST_ERROR} from "../../../constants";
+import {addSell} from "../api/summary";
 export const Summary = () => {
   const [showPolicy, setShowPolicy] = useState(false);
   const [showClient, setShowClient] = useState(false);
   const [percent, setPercent] = useState(0);
   const [sum, setSum] = useState(0);
   const location = useLocation();
+  console.log("location in summary", location)
   const sellPrice = location.state.game.sellPrice;
   const discount = location.state.game.discount;
   const navigate = useNavigate();
@@ -158,6 +162,16 @@ export const Summary = () => {
             colorScheme="teal"
             mt={10}
             onClick={() => {
+                const sellObj = {
+                  nip: location.state.invoice ? location.state.invoice.nip : null,
+                  invoiceCompanyName: location.state.invoice ? location.state.invoice.companyName : null,
+                  ratingValue: null,
+                  ratingDescription: null,
+                  sellTimestamp: Date.now(),
+                  gameId: location.state.game.id,
+                  personId: location.state.client.id
+                }
+                const response =  addSell(sellObj);
               navigate('/', { state: 'summary' });
             }}
           >
