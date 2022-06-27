@@ -18,6 +18,7 @@ export const Summary = () => {
   const [percent, setPercent] = useState(0);
   const [sum, setSum] = useState(0);
   const location = useLocation();
+  console.log("location in summary", location)
   const sellPrice = location.state.game.sellPrice;
   const discount = location.state.game.discount;
   const navigate = useNavigate();

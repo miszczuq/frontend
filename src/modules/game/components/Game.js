@@ -27,10 +27,11 @@ export const Game = () => {
   const [showDefaultBody, setShowDefaultBody] = useState(true);
   const [showDiscountInput, setShowDiscountInput] = useState(false);
   const [askForInvoice, setAskForInvoice] = useState(false);
-  const [newDiscount, setNewDiscount] = useState(0);
+  const location = useLocation();
+  const [newDiscount, setNewDiscount] = useState(location.state.game.discount);
 
   const navigate = useNavigate();
-  const location = useLocation();
+
   const [isLessThan] = useMediaQuery('(max-width: 768px)');
 
   const { isOpen, onOpen, onClose } = useDisclosure();

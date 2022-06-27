@@ -60,26 +60,6 @@ export const InvoiceForm = () => {
         >
           {props => (
             <Form>
-              <Field name="invoiceId">
-                {({ field, form }) => (
-                  <FormControl
-                    isInvalid={
-                      form.errors.companyName && form.touched.companyName
-                    }
-                    mb={5}
-                  >
-                    <FormLabel htmlFor="invoiceId">ID faktury</FormLabel>
-                    <Input
-                      {...field}
-                      id="companyName"
-                      placeholder="nazwa firmy"
-                    />
-                    <FormErrorMessage>
-                      {form.errors.companyName}
-                    </FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
               <Field name="companyName">
                 {({ field, form }) => (
                   <FormControl
