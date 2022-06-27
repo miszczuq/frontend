@@ -21,14 +21,7 @@ export const InvoiceForm = () => {
   const navigate = useNavigate();
   const validate = Yup.object({
     companyName: Yup.string().required('Nazwa firmy jest wymagana'),
-    phoneNumber: Yup.number()
-      .typeError('Podaj numer')
-      .required('Numer telefonu jest wymagany')
-      .test(
-        'len',
-        'Numer telefonu musi mieć 9 znaków',
-        val => val && val.toString().length === 9
-      ),
+    address: Yup.string().required('Adres jest wymagany'),
     nip: Yup.number()
       .typeError('Podaj numer')
       .required('Nip jest wymagany')
@@ -44,7 +37,7 @@ export const InvoiceForm = () => {
       <Box p={4} w="30%">
         <Center>
           <Text fontSize="1xl" mb={10}>
-            Wprowadź dane do faktury 😳
+            Wprowadź dane do faktury
           </Text>
         </Center>
         <Formik
@@ -80,26 +73,17 @@ export const InvoiceForm = () => {
                   </FormControl>
                 )}
               </Field>
-              <Field name="phoneNumber">
+              <Field name="address">
                 {({ field, form }) => (
                   <FormControl
-                    isInvalid={
-                      form.errors.phoneNumber && form.touched.phoneNumber
-                    }
+                    isInvalid={form.errors.address && form.touched.address}
                     mb={5}
                   >
-                    <FormLabel htmlFor="phoneNumber">Nazwa firmy</FormLabel>
+                    <FormLabel htmlFor="address">Adres</FormLabel>
                     <InputGroup>
-                      <InputLeftAddon children="+48" />
-                      <Input
-                        {...field}
-                        id="phoneNumber"
-                        placeholder="numer telefonu"
-                      />
+                      <Input {...field} id="address" placeholder="adres" />
                     </InputGroup>
-                    <FormErrorMessage>
-                      {form.errors.phoneNumber}
-                    </FormErrorMessage>
+                    <FormErrorMessage>{form.errors.address}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
@@ -109,7 +93,7 @@ export const InvoiceForm = () => {
                     isInvalid={form.errors.nip && form.touched.nip}
                     mb={5}
                   >
-                    <FormLabel htmlFor="nip">Nazwa firmy</FormLabel>
+                    <FormLabel htmlFor="nip">NIP</FormLabel>
                     <Input {...field} id="nip" placeholder="NIP" />
                     <FormErrorMessage>{form.errors.nip}</FormErrorMessage>
                   </FormControl>
