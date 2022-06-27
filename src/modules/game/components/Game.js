@@ -212,20 +212,19 @@ export const Game = () => {
           <Text fontSize="4xl" m={8}>
             {location.state.game.title}
           </Text>
-          <Text w="80%" fontSize="sm" textAlign="left">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro quia
-            voluptates rem accusamus architecto illo quaerat voluptatem vero sed
-            cumque. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Laboriosam quia quaerat non dolorum aperiam omnis ullam cupiditate
-            nobis dignissimos optio. Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Sint ipsa animi modi qui eius voluptate repellat
-            tenetur facere corrupti molestias natus dolorem aliquid cupiditate,
-            assumenda impedit, expedita reiciendis dicta perspiciatis, ex ipsam
-            rem quia. Unde porro quaerat veritatis vitae animi fuga earum, quam
-            pariatur facilis. Quia et aut modi placeat ex commodi, error,
-            repellendus quae architecto itaque debitis illo, perspiciatis totam
-            quam. Fugit neque nam nemo architecto asperiores quos dicta aliquam
+          <Text w="100%" fontSize="md" textAlign="left">
+            Platrofma: {location.state.game.platform}
           </Text>
+          <Text w="100%" fontSize="md" textAlign="left">
+            Gatunek: {location.state.game.genre}
+          </Text>
+            <Text w="100%" fontSize="md" textAlign="left">
+            Stan: {location.state.game.quality}
+            </Text>
+              <Text w="100%" fontSize="md" textAlign="left">
+            Cena: {location.state.game.sellPrice}
+              </Text>
+
         </Center>
         <Center p={10} flexDirection={!isLessThan ? 'row' : 'column'}>
           <Button

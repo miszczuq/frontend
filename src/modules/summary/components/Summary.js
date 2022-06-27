@@ -72,8 +72,8 @@ export const Summary = () => {
               <Text>{location.state.invoice.companyName}</Text>
             </Center>
             <Center justifyContent="space-between" mb={4}>
-              <Text>Numer telefonu</Text>
-              <Text>{location.state.invoice.phoneNumber}</Text>
+              <Text>Adres</Text>
+              <Text>{location.state.invoice.address}</Text>
             </Center>
             <Center justifyContent="space-between" mb={4}>
               <Text>NIP</Text>
